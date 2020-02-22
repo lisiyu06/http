@@ -1,0 +1,31 @@
+package http;
+
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+/**
+ * Author: lisiyu
+ * Created: 2020/2/18
+ */
+public class HttpSever {
+
+    private static final int PORT = 9999;
+
+    private static final ExecutorService POOL = Executors.newCachedThreadPool();
+
+    public static void main(String[] args) throws IOException {
+
+        ServerSocket server = new ServerSocket(PORT);
+
+        while (true) {
+            // 阻塞等待获取到新的客户端连接
+            Socket socket = server.accept();
+            POOL.execute(new HttpTask(socket));
+        }
+    }
+
+}
+
